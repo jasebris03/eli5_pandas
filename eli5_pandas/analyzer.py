@@ -10,6 +10,7 @@ import pandas as pd
 from .field_detector import FieldTypeDetector, get_sample_values
 from .models import AnalysisResult, FieldAnalysis, FieldType
 from .statistics import StatisticsCalculator
+from .charts import ChartGenerator
 
 
 class DataAnalyzer:
@@ -24,6 +25,8 @@ class DataAnalyzer:
         """
         self.field_detector = FieldTypeDetector(categorical_threshold)
         self.stats_calculator = StatisticsCalculator()
+        self.chart_generator = ChartGenerator()
+        self._data: Optional[pd.DataFrame] = None
     
     def analyze_file(self, file_path: str) -> AnalysisResult:
         """
@@ -38,12 +41,12 @@ class DataAnalyzer:
         start_time = time.time()
         
         # Load the data
-        df = self._load_data(file_path)
+        self._data = self._load_data(file_path)
         
         # Analyze each field
         field_analyses = []
-        for column in df.columns:
-            field_analysis = self._analyze_field(df[column], column)
+        for column in self._data.columns:
+            field_analysis = self._analyze_field(self._data[column], column)
             field_analyses.append(field_analysis)
         
         processing_time = time.time() - start_time
@@ -52,13 +55,40 @@ class DataAnalyzer:
         result = AnalysisResult(
             file_path=file_path,
             file_type=self._get_file_type(file_path),
-            total_rows=len(df),
-            total_columns=len(df.columns),
+            total_rows=len(self._data),
+            total_columns=len(self._data.columns),
             fields=field_analyses,
             processing_time_seconds=round(processing_time, 2)
         )
         
         return result
+    
+    def generate_charts(self, analysis_result: AnalysisResult) -> dict:
+        """
+        Generate charts for the analysis result.
+        
+        Args:
+            analysis_result: AnalysisResult object
+            
+        Returns:
+            Dictionary containing charts for each field and summary charts
+        """
+        if self._data is None:
+            raise ValueError("No data loaded. Call analyze_file() first.")
+        
+        charts = {}
+        
+        # Generate charts for each field
+        for field in analysis_result.fields:
+            field_chart = self.chart_generator.generate_field_chart(field, self._data[field.name])
+            if field_chart:
+                charts[f"field_{field.name}"] = field_chart
+        
+        # Generate summary charts
+        summary_charts = self.chart_generator.generate_summary_charts(analysis_result.fields, self._data)
+        charts.update(summary_charts)
+        
+        return charts
     
     def _load_data(self, file_path: str) -> pd.DataFrame:
         """

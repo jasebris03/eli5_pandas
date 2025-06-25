@@ -26,11 +26,11 @@
       "string_stats": null,
       "datetime_stats": null,
       "sample_values": [
-        44,
-        21,
-        29,
         45,
-        7
+        46,
+        20,
+        21,
+        12
       ]
     },
     {
@@ -49,11 +49,11 @@
       },
       "datetime_stats": null,
       "sample_values": [
-        "Wendy Nelson",
-        "Emma Parker",
-        "Mark Rodriguez",
-        "Alice Brown",
-        "Henry Collins"
+        "Bob Johnson",
+        "Zachary Perez",
+        "Diana Davis",
+        "Sam Green",
+        "Kevin Martinez"
       ]
     },
     {
@@ -78,11 +78,11 @@
       "string_stats": null,
       "datetime_stats": null,
       "sample_values": [
-        31,
-        33,
+        30,
+        37,
+        43,
         44,
-        34,
-        38
+        41
       ]
     },
     {
@@ -107,11 +107,11 @@
       "string_stats": null,
       "datetime_stats": null,
       "sample_values": [
-        80000.0,
-        91000.25,
-        96000.25,
+        92000.0,
         88000.5,
-        63000.0
+        92000.25,
+        68000.5,
+        90000.0
       ]
     },
     {
@@ -193,11 +193,11 @@
         "missing_percentage": 0.0
       },
       "sample_values": [
-        "2021-09-18",
-        "2022-10-22",
-        "2022-06-12",
-        "2020-11-08",
-        "2022-01-20"
+        "2020-05-18",
+        "2021-02-14",
+        "2021-11-30",
+        "2020-04-30",
+        "2022-02-28"
       ]
     },
     {
@@ -222,11 +222,11 @@
       "string_stats": null,
       "datetime_stats": null,
       "sample_values": [
-        3.7,
-        4.0,
         4.8,
-        3.9,
-        4.5
+        4.0,
+        4.5,
+        3.7,
+        3.9
       ]
     },
     {
@@ -245,11 +245,11 @@
       },
       "datetime_stats": null,
       "sample_values": [
-        "iris.stewart@company.com",
+        "umberto.ward@company.com",
+        "ian.taylor@company.com",
+        "ruby.cooper@company.com",
         "kelly.rogers@company.com",
-        "quinn.bailey@company.com",
-        "yvonne.mitchell@company.com",
-        "emma.parker@company.com"
+        "paul.murphy@company.com"
       ]
     },
     {
@@ -268,14 +268,14 @@
       },
       "datetime_stats": null,
       "sample_values": [
-        "Indianapolis",
-        "Omaha",
-        "Charlotte",
-        "Orlando",
-        "Baltimore"
+        "Memphis",
+        "San Antonio",
+        "San Jose",
+        "Minneapolis",
+        "Detroit"
       ]
     }
   ],
-  "analysis_timestamp": "2025-06-25 12:11:35.573840",
+  "analysis_timestamp": "2025-06-25 15:18:47.715418",
   "processing_time_seconds": 0.02
 }

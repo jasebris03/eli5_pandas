@@ -39,6 +39,12 @@ def main() -> None:
     help='Threshold for determining categorical fields (default: 0.1)'
 )
 @click.option(
+    '--with-charts',
+    '-c',
+    is_flag=True,
+    help='Include interactive charts in HTML report'
+)
+@click.option(
     '--verbose',
     '-v',
     is_flag=True,
@@ -49,6 +55,7 @@ def analyze(
     output_json: Optional[Path],
     output_html: Optional[Path],
     categorical_threshold: float,
+    with_charts: bool,
     verbose: bool
 ) -> None:
     """
@@ -60,6 +67,8 @@ def analyze(
         if verbose:
             click.echo(f"🔍 Analyzing file: {file_path}")
             click.echo(f"📊 Categorical threshold: {categorical_threshold}")
+            if with_charts:
+                click.echo("📈 Charts will be included in HTML report")
         
         # Initialize analyzer
         analyzer = DataAnalyzer(categorical_threshold=categorical_threshold)
@@ -74,6 +83,15 @@ def analyze(
             click.echo(f"✅ Analysis completed in {analysis_result.processing_time_seconds}s")
             click.echo(f"📈 Found {analysis_result.total_rows} rows and {analysis_result.total_columns} columns")
         
+        # Generate charts if requested
+        charts = None
+        if with_charts:
+            if verbose:
+                click.echo("📊 Generating charts...")
+            charts = analyzer.generate_charts(analysis_result)
+            if verbose:
+                click.echo(f"✅ Generated {len(charts)} charts")
+        
         # Save JSON output if requested
         if output_json:
             if verbose:
@@ -86,7 +104,7 @@ def analyze(
             if verbose:
                 click.echo(f"🌐 Generating HTML report: {output_html}")
             reporter = HTMLReporter()
-            reporter.generate_report(analysis_result, str(output_html))
+            reporter.generate_report(analysis_result, str(output_html), charts)
             click.echo(f"✅ HTML report saved to: {output_html}")
         
         # Display summary if no output files specified
@@ -145,6 +163,12 @@ def generate_html(json_path: Path, output_path: Path, verbose: bool) -> None:
     help='Threshold for determining categorical fields (default: 0.1)'
 )
 @click.option(
+    '--with-charts',
+    '-c',
+    is_flag=True,
+    help='Include interactive charts in HTML report'
+)
+@click.option(
     '--verbose',
     '-v',
     is_flag=True,
@@ -154,6 +178,7 @@ def quick_analyze(
     file_path: Path,
     output: Optional[Path],
     categorical_threshold: float,
+    with_charts: bool,
     verbose: bool
 ) -> None:
     """
@@ -164,6 +189,8 @@ def quick_analyze(
     try:
         if verbose:
             click.echo(f"🚀 Quick analysis of: {file_path}")
+            if with_charts:
+                click.echo("📈 Charts will be included in HTML report")
         
         # Generate output paths if not provided
         if not output:
@@ -185,11 +212,20 @@ def quick_analyze(
         
         analysis_result = analyzer.analyze_file(str(file_path))
         
+        # Generate charts if requested
+        charts = None
+        if with_charts:
+            if verbose:
+                click.echo("📊 Generating charts...")
+            charts = analyzer.generate_charts(analysis_result)
+            if verbose:
+                click.echo(f"✅ Generated {len(charts)} charts")
+        
         # Save results
         analyzer.save_analysis_to_json(analysis_result, str(json_path))
         
         reporter = HTMLReporter()
-        reporter.generate_report(analysis_result, str(html_path))
+        reporter.generate_report(analysis_result, str(html_path), charts)
         
         click.echo(f"✅ Analysis complete!")
         click.echo(f"📄 JSON results: {json_path}")
