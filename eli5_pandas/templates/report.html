@@ -110,12 +110,53 @@
             background: #fafbfc;
         }
         
-        .field-type-section {
+        /* Accordion Styles */
+        .accordion {
             background: white;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             overflow: hidden;
+        }
+        
+        .accordion-header {
+            background: #f8f9fa;
+            padding: 20px;
+            cursor: pointer;
+            border-bottom: 1px solid #e9ecef;
+            transition: background-color 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .accordion-header:hover {
+            background: #e9ecef;
+        }
+        
+        .accordion-header h2 {
+            color: #333;
+            font-size: 1.5em;
+            margin: 0;
+        }
+        
+        .accordion-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            max-height: 2000px;
         }
         
         .field-grid {
@@ -282,105 +323,136 @@
         {% endif %}
         
         {% for field_type, fields in fields_by_type.items() %}
-        <div class="field-type-section">
-            <div class="section-header">
+        <div class="accordion">
+            <div class="accordion-header" onclick="toggleAccordion(this)">
                 <h2>{{ field_type | title }} Fields ({{ fields | length }})</h2>
+                <span class="accordion-icon">▼</span>
             </div>
-            <div class="field-grid">
-                {% for field in fields %}
-                <div class="field-card">
-                    <div class="field-header">
-                        <div class="field-name">{{ field.name }}</div>
-                        <div class="field-type-badge">{{ field.field_type.value }}</div>
-                    </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <div class="stat-value">{{ field.total_count | format_number }}</div>
-                            <div class="stat-label">Total Values</div>
+            <div class="accordion-content">
+                <div class="field-grid">
+                    {% for field in fields %}
+                    <div class="field-card">
+                        <div class="field-header">
+                            <div class="field-name">{{ field.name }}</div>
+                            <div class="field-type-badge">{{ field.field_type.value }}</div>
                         </div>
                         
-                        {% if field.categorical_stats %}
-                        <div class="stat-item">
-                            <div class="stat-value">{{ field.categorical_stats.unique_count | format_number }}</div>
-                            <div class="stat-label">Unique Values</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value {% if field.categorical_stats.missing_percentage > 10 %}missing-data{% elif field.categorical_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
-                                {{ field.categorical_stats.missing_percentage }}%
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.total_count | format_number }}</div>
+                                <div class="stat-label">Total Values</div>
                             </div>
-                            <div class="stat-label">Missing Data</div>
+                            
+                            {% if field.categorical_stats %}
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.categorical_stats.unique_count | format_number }}</div>
+                                <div class="stat-label">Unique Values</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value {% if field.categorical_stats.missing_percentage > 10 %}missing-data{% elif field.categorical_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
+                                    {{ field.categorical_stats.missing_percentage }}%
+                                </div>
+                                <div class="stat-label">Missing Data</div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if field.numerical_stats %}
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.mean | round(2) if field.numerical_stats.mean else 'N/A' }}</div>
+                                <div class="stat-label">Mean</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.std_dev | round(2) if field.numerical_stats.std_dev else 'N/A' }}</div>
+                                <div class="stat-label">Std Dev</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value {% if field.numerical_stats.missing_percentage > 10 %}missing-data{% elif field.numerical_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
+                                    {{ field.numerical_stats.missing_percentage }}%
+                                </div>
+                                <div class="stat-label">Missing Data</div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if field.string_stats %}
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.string_stats.avg_length | round(1) if field.string_stats.avg_length else 'N/A' }}</div>
+                                <div class="stat-label">Avg Length</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.string_stats.unique_count | format_number }}</div>
+                                <div class="stat-label">Unique Values</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value {% if field.string_stats.missing_percentage > 10 %}missing-data{% elif field.string_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
+                                    {{ field.string_stats.missing_percentage }}%
+                                </div>
+                                <div class="stat-label">Missing Data</div>
+                            </div>
+                            {% endif %}
+                            
+                            {% if field.datetime_stats %}
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.datetime_stats.min_date.strftime('%Y-%m-%d') if field.datetime_stats.min_date else 'N/A' }}</div>
+                                <div class="stat-label">Earliest Date</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.datetime_stats.max_date.strftime('%Y-%m-%d') if field.datetime_stats.max_date else 'N/A' }}</div>
+                                <div class="stat-label">Latest Date</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value {% if field.datetime_stats.missing_percentage > 10 %}missing-data{% elif field.datetime_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
+                                    {{ field.datetime_stats.missing_percentage }}%
+                                </div>
+                                <div class="stat-label">Missing Data</div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        {% if field.sample_values %}
+                        <div class="sample-values">
+                            <strong>Sample Values:</strong> {{ field.sample_values | join(', ') }}
                         </div>
                         {% endif %}
                         
-                        {% if field.numerical_stats %}
-                        <div class="stat-item">
-                            <div class="stat-value">{{ field.numerical_stats.mean | round(2) if field.numerical_stats.mean else 'N/A' }}</div>
-                            <div class="stat-label">Mean</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">{{ field.numerical_stats.std_dev | round(2) if field.numerical_stats.std_dev else 'N/A' }}</div>
-                            <div class="stat-label">Std Dev</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value {% if field.numerical_stats.missing_percentage > 10 %}missing-data{% elif field.numerical_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
-                                {{ field.numerical_stats.missing_percentage }}%
-                            </div>
-                            <div class="stat-label">Missing Data</div>
-                        </div>
-                        {% endif %}
-                        
-                        {% if field.string_stats %}
-                        <div class="stat-item">
-                            <div class="stat-value">{{ field.string_stats.avg_length | round(1) if field.string_stats.avg_length else 'N/A' }}</div>
-                            <div class="stat-label">Avg Length</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">{{ field.string_stats.unique_count | format_number }}</div>
-                            <div class="stat-label">Unique Values</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value {% if field.string_stats.missing_percentage > 10 %}missing-data{% elif field.string_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
-                                {{ field.string_stats.missing_percentage }}%
-                            </div>
-                            <div class="stat-label">Missing Data</div>
-                        </div>
-                        {% endif %}
-                        
-                        {% if field.datetime_stats %}
-                        <div class="stat-item">
-                            <div class="stat-value">{{ field.datetime_stats.min_date.strftime('%Y-%m-%d') if field.datetime_stats.min_date else 'N/A' }}</div>
-                            <div class="stat-label">Earliest Date</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value">{{ field.datetime_stats.max_date.strftime('%Y-%m-%d') if field.datetime_stats.max_date else 'N/A' }}</div>
-                            <div class="stat-label">Latest Date</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value {% if field.datetime_stats.missing_percentage > 10 %}missing-data{% elif field.datetime_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
-                                {{ field.datetime_stats.missing_percentage }}%
-                            </div>
-                            <div class="stat-label">Missing Data</div>
+                        {% if charts['field_' + field.name] %}
+                        <div class="field-chart">
+                            {{ charts['field_' + field.name] | safe }}
                         </div>
                         {% endif %}
                     </div>
-                    
-                    {% if field.sample_values %}
-                    <div class="sample-values">
-                        <strong>Sample Values:</strong> {{ field.sample_values | join(', ') }}
-                    </div>
-                    {% endif %}
-                    
-                    {% if charts['field_' + field.name] %}
-                    <div class="field-chart">
-                        {{ charts['field_' + field.name] | safe }}
-                    </div>
-                    {% endif %}
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </div>
         {% endfor %}
     </div>
+    
+    <script>
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+            
+            // Close all accordions
+            document.querySelectorAll('.accordion-header').forEach(h => {
+                h.classList.remove('active');
+                h.nextElementSibling.classList.remove('active');
+            });
+            
+            // Open clicked accordion if it wasn't active
+            if (!isActive) {
+                header.classList.add('active');
+                content.classList.add('active');
+            }
+        }
+        
+        // Open first accordion by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstAccordion = document.querySelector('.accordion-header');
+            if (firstAccordion) {
+                firstAccordion.classList.add('active');
+                firstAccordion.nextElementSibling.classList.add('active');
+            }
+        });
+    </script>
 </body>
 </html>
