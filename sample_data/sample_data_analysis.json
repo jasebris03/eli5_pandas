@@ -1,0 +1,281 @@
+{
+  "file_path": "sample_data/sample_data.csv",
+  "file_type": "csv",
+  "total_rows": 50,
+  "total_columns": 10,
+  "fields": [
+    {
+      "name": "id",
+      "field_type": "integer",
+      "total_count": 50,
+      "categorical_stats": null,
+      "numerical_stats": {
+        "min_value": 1.0,
+        "max_value": 50.0,
+        "mean": 25.5,
+        "median": 25.5,
+        "std_dev": 14.5774,
+        "quartiles": {
+          "q25": 13.25,
+          "q50": 25.5,
+          "q75": 37.75
+        },
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "string_stats": null,
+      "datetime_stats": null,
+      "sample_values": [
+        44,
+        21,
+        29,
+        45,
+        7
+      ]
+    },
+    {
+      "name": "name",
+      "field_type": "string",
+      "total_count": 50,
+      "categorical_stats": null,
+      "numerical_stats": null,
+      "string_stats": {
+        "min_length": 8,
+        "max_length": 18,
+        "avg_length": 11.98,
+        "unique_count": 50,
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "datetime_stats": null,
+      "sample_values": [
+        "Wendy Nelson",
+        "Emma Parker",
+        "Mark Rodriguez",
+        "Alice Brown",
+        "Henry Collins"
+      ]
+    },
+    {
+      "name": "age",
+      "field_type": "integer",
+      "total_count": 50,
+      "categorical_stats": null,
+      "numerical_stats": {
+        "min_value": 26.0,
+        "max_value": 45.0,
+        "mean": 35.32,
+        "median": 35.5,
+        "std_dev": 5.6404,
+        "quartiles": {
+          "q25": 30.25,
+          "q50": 35.5,
+          "q75": 40.0
+        },
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "string_stats": null,
+      "datetime_stats": null,
+      "sample_values": [
+        31,
+        33,
+        44,
+        34,
+        38
+      ]
+    },
+    {
+      "name": "salary",
+      "field_type": "float",
+      "total_count": 50,
+      "categorical_stats": null,
+      "numerical_stats": {
+        "min_value": 58000.0,
+        "max_value": 96000.25,
+        "mean": 79320.31,
+        "median": 81500.625,
+        "std_dev": 11420.4333,
+        "quartiles": {
+          "q25": 70500.1875,
+          "q50": 81500.625,
+          "q75": 89750.125
+        },
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "string_stats": null,
+      "datetime_stats": null,
+      "sample_values": [
+        80000.0,
+        91000.25,
+        96000.25,
+        88000.5,
+        63000.0
+      ]
+    },
+    {
+      "name": "is_active",
+      "field_type": "boolean",
+      "total_count": 50,
+      "categorical_stats": {
+        "unique_count": 2,
+        "top_values": [
+          {
+            "value": "True",
+            "count": 38,
+            "percentage": 76.0
+          },
+          {
+            "value": "False",
+            "count": 12,
+            "percentage": 24.0
+          }
+        ],
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "numerical_stats": null,
+      "string_stats": null,
+      "datetime_stats": null,
+      "sample_values": [
+        true,
+        false
+      ]
+    },
+    {
+      "name": "department",
+      "field_type": "categorical",
+      "total_count": 50,
+      "categorical_stats": {
+        "unique_count": 3,
+        "top_values": [
+          {
+            "value": "Engineering",
+            "count": 17,
+            "percentage": 34.0
+          },
+          {
+            "value": "Marketing",
+            "count": 17,
+            "percentage": 34.0
+          },
+          {
+            "value": "Sales",
+            "count": 16,
+            "percentage": 32.0
+          }
+        ],
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "numerical_stats": null,
+      "string_stats": null,
+      "datetime_stats": null,
+      "sample_values": [
+        "Engineering",
+        "Marketing",
+        "Sales"
+      ]
+    },
+    {
+      "name": "hire_date",
+      "field_type": "datetime",
+      "total_count": 50,
+      "categorical_stats": null,
+      "numerical_stats": null,
+      "string_stats": null,
+      "datetime_stats": {
+        "min_date": "2018-08-05 00:00:00",
+        "max_date": "2022-10-22 00:00:00",
+        "unique_count": 50,
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "sample_values": [
+        "2021-09-18",
+        "2022-10-22",
+        "2022-06-12",
+        "2020-11-08",
+        "2022-01-20"
+      ]
+    },
+    {
+      "name": "rating",
+      "field_type": "float",
+      "total_count": 50,
+      "categorical_stats": null,
+      "numerical_stats": {
+        "min_value": 3.7,
+        "max_value": 4.8,
+        "mean": 4.204,
+        "median": 4.2,
+        "std_dev": 0.2906,
+        "quartiles": {
+          "q25": 4.0,
+          "q50": 4.2,
+          "q75": 4.4
+        },
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "string_stats": null,
+      "datetime_stats": null,
+      "sample_values": [
+        3.7,
+        4.0,
+        4.8,
+        3.9,
+        4.5
+      ]
+    },
+    {
+      "name": "email",
+      "field_type": "string",
+      "total_count": 50,
+      "categorical_stats": null,
+      "numerical_stats": null,
+      "string_stats": {
+        "min_length": 20,
+        "max_length": 30,
+        "avg_length": 23.98,
+        "unique_count": 50,
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "datetime_stats": null,
+      "sample_values": [
+        "iris.stewart@company.com",
+        "kelly.rogers@company.com",
+        "quinn.bailey@company.com",
+        "yvonne.mitchell@company.com",
+        "emma.parker@company.com"
+      ]
+    },
+    {
+      "name": "city",
+      "field_type": "string",
+      "total_count": 50,
+      "categorical_stats": null,
+      "numerical_stats": null,
+      "string_stats": {
+        "min_length": 4,
+        "max_length": 16,
+        "avg_length": 8.62,
+        "unique_count": 44,
+        "missing_count": 0,
+        "missing_percentage": 0.0
+      },
+      "datetime_stats": null,
+      "sample_values": [
+        "Indianapolis",
+        "Omaha",
+        "Charlotte",
+        "Orlando",
+        "Baltimore"
+      ]
+    }
+  ],
+  "analysis_timestamp": "2025-06-25 12:11:35.573840",
+  "processing_time_seconds": 0.02
+}

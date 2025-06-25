@@ -1,0 +1,51 @@
+id,name,age,salary,is_active,department,hire_date,rating,email,city
+1,John Smith,32,75000.50,True,Engineering,2020-03-15,4.5,john.smith@company.com,New York
+2,Jane Doe,28,65000.00,True,Marketing,2019-07-22,4.2,jane.doe@company.com,Los Angeles
+3,Bob Johnson,45,95000.75,False,Sales,2018-11-10,3.8,bob.johnson@company.com,Chicago
+4,Alice Brown,29,70000.25,True,Engineering,2021-01-15,4.7,alice.brown@company.com,San Francisco
+5,Charlie Wilson,38,85000.00,True,Marketing,2020-09-30,4.1,charlie.wilson@company.com,Boston
+6,Diana Davis,41,90000.50,True,Sales,2019-05-12,4.3,diana.davis@company.com,Seattle
+7,Edward Miller,35,80000.00,False,Engineering,2021-06-20,4.0,edward.miller@company.com,Austin
+8,Fiona Garcia,27,60000.75,True,Marketing,2022-02-28,4.6,fiona.garcia@company.com,Denver
+9,George Lee,44,92000.25,True,Sales,2018-08-05,3.9,george.lee@company.com,Miami
+10,Helen White,31,72000.00,True,Engineering,2020-12-10,4.4,helen.white@company.com,Portland
+11,Ian Taylor,39,88000.50,False,Marketing,2021-03-18,4.2,ian.taylor@company.com,Atlanta
+12,Julia Anderson,26,58000.00,True,Sales,2022-07-25,4.8,julia.anderson@company.com,Philadelphia
+13,Kevin Martinez,37,82000.75,True,Engineering,2020-04-30,4.1,kevin.martinez@company.com,Detroit
+14,Lisa Thompson,33,76000.25,True,Marketing,2021-08-12,4.3,lisa.thompson@company.com,Phoenix
+15,Mark Rodriguez,42,93000.00,False,Sales,2019-10-15,3.7,mark.rodriguez@company.com,Las Vegas
+16,Nancy Lewis,30,68000.50,True,Engineering,2022-01-20,4.5,nancy.lewis@company.com,Minneapolis
+17,Oscar Hall,36,84000.00,True,Marketing,2020-11-08,4.0,oscar.hall@company.com,Orlando
+18,Patricia Young,29,67000.75,True,Sales,2021-12-03,4.4,patricia.young@company.com,San Diego
+19,Quentin Allen,40,91000.25,False,Engineering,2019-02-14,3.9,quentin.allen@company.com,Charlotte
+20,Rachel Scott,34,78000.00,True,Marketing,2020-06-25,4.2,rachel.scott@company.com,Columbus
+21,Sam Green,43,94000.50,True,Sales,2018-12-18,4.1,sam.green@company.com,Fort Worth
+22,Tina Baker,28,62000.75,True,Engineering,2022-04-10,4.6,tina.baker@company.com,Indianapolis
+23,Victor Adams,38,86000.00,False,Marketing,2021-05-22,3.8,victor.adams@company.com,San Jose
+24,Wendy Nelson,32,74000.25,True,Sales,2020-08-30,4.3,wendy.nelson@company.com,Washington
+25,Xavier Carter,41,92000.00,True,Engineering,2019-04-05,4.0,xavier.carter@company.com,Jacksonville
+26,Yvonne Mitchell,27,61000.50,True,Marketing,2022-09-15,4.7,yvonne.mitchell@company.com,San Antonio
+27,Zachary Perez,39,87000.75,False,Sales,2021-07-28,3.9,zachary.perez@company.com,Memphis
+28,Amanda Roberts,31,73000.00,True,Engineering,2020-10-12,4.4,amanda.roberts@company.com,Detroit
+29,Brian Turner,44,96000.25,True,Marketing,2019-01-25,4.1,brian.turner@company.com,Baltimore
+30,Christine Phillips,35,81000.50,True,Sales,2021-11-30,4.2,christine.phillips@company.com,El Paso
+31,David Campbell,29,64000.00,False,Engineering,2022-03-08,3.8,david.campbell@company.com,Milwaukee
+32,Emma Parker,37,83000.75,True,Marketing,2020-05-18,4.5,emma.parker@company.com,Oklahoma City
+33,Frank Evans,42,95000.00,True,Sales,2019-09-22,4.0,frank.evans@company.com,Portland
+34,Grace Edwards,33,75000.25,True,Engineering,2021-02-14,4.3,grace.edwards@company.com,Louisville
+35,Henry Collins,40,89000.50,False,Marketing,2020-07-05,3.9,henry.collins@company.com,Las Vegas
+36,Iris Stewart,28,63000.00,True,Sales,2022-06-12,4.6,iris.stewart@company.com,Albuquerque
+37,Jack Morris,36,82000.75,True,Engineering,2021-04-30,4.1,jack.morris@company.com,Tucson
+38,Kelly Rogers,43,93000.25,True,Marketing,2019-12-08,4.2,kelly.rogers@company.com,Fresno
+39,Larry Reed,31,72000.00,False,Sales,2020-01-20,3.7,larry.reed@company.com,Sacramento
+40,Maria Cook,38,85000.50,True,Engineering,2021-10-15,4.4,maria.cook@company.com,Atlanta
+41,Nick Morgan,29,66000.75,True,Marketing,2022-08-28,4.5,nick.morgan@company.com,Kansas City
+42,Olive Bell,41,90000.00,True,Sales,2019-06-10,4.0,olive.bell@company.com,Mesa
+43,Paul Murphy,34,77000.25,False,Engineering,2020-12-03,3.9,paul.murphy@company.com,Virginia Beach
+44,Quinn Bailey,39,88000.50,True,Marketing,2021-09-18,4.3,quinn.bailey@company.com,Colorado Springs
+45,Ruby Cooper,27,59000.00,True,Sales,2022-05-25,4.7,ruby.cooper@company.com,Raleigh
+46,Steve Richardson,44,94000.75,True,Engineering,2019-03-12,4.1,steve.richardson@company.com,Omaha
+47,Tracy Cox,32,74000.00,False,Marketing,2020-11-30,3.8,tracy.cox@company.com,Miami
+48,Umberto Ward,37,83000.25,True,Sales,2021-01-08,4.2,umberto.ward@company.com,Oakland
+49,Vera Torres,30,68000.50,True,Engineering,2022-10-22,4.5,vera.torres@company.com,Minneapolis
+50,Walter Peterson,42,91000.00,True,Marketing,2019-08-15,4.0,walter.peterson@company.com,Tulsa 
