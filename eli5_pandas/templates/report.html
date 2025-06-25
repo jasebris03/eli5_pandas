@@ -268,6 +268,39 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        .sample-table-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        .sample-table-wrapper {
+            padding: 20px;
+            overflow-x: auto;
+        }
+        .sample-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.98em;
+        }
+        .sample-table th, .sample-table td {
+            border: 1px solid #e9ecef;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        .sample-table th {
+            background: #f8f9fa;
+            color: #333;
+            font-weight: bold;
+        }
+        .sample-table tr:nth-child(even) {
+            background: #fafbfc;
+        }
+        .sample-table tr:hover {
+            background: #f1f3f6;
+        }
     </style>
 </head>
 <body>
@@ -299,6 +332,34 @@
                 <div class="stat-label">Processing Time</div>
             </div>
         </div>
+        
+        {% if sample_table and sample_columns %}
+        <div class="sample-table-section">
+            <div class="section-header">
+                <h2>🔎 Sample Data ({{ sample_table|length }} rows)</h2>
+            </div>
+            <div class="sample-table-wrapper">
+                <table class="sample-table">
+                    <thead>
+                        <tr>
+                            {% for col in sample_columns %}
+                            <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in sample_table %}
+                        <tr>
+                            {% for col in sample_columns %}
+                            <td>{{ row[col] }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
         
         {% if charts %}
         <div class="charts-section">

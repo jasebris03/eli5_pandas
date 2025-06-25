@@ -28,7 +28,7 @@ class HTMLReporter:
         """Get the directory containing HTML templates."""
         return str(Path(__file__).parent / "templates")
     
-    def generate_report(self, analysis_result: AnalysisResult, output_path: str, charts: Optional[Dict[str, str]] = None) -> None:
+    def generate_report(self, analysis_result: AnalysisResult, output_path: str, charts: Optional[Dict[str, str]] = None, sample_df: Optional[Any] = None) -> None:
         """
         Generate an HTML report from analysis results.
         
@@ -36,11 +36,12 @@ class HTMLReporter:
             analysis_result: AnalysisResult object
             output_path: Path where to save the HTML file
             charts: Optional dictionary of charts to include
+            sample_df: Optional sample DataFrame to display
         """
         template = self.env.get_template("report.html")
         
         # Prepare template context
-        context = self._prepare_context(analysis_result, charts)
+        context = self._prepare_context(analysis_result, charts, sample_df)
         
         # Render the template
         html_content = template.render(**context)
@@ -49,13 +50,14 @@ class HTMLReporter:
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(html_content)
     
-    def _prepare_context(self, analysis_result: AnalysisResult, charts: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+    def _prepare_context(self, analysis_result: AnalysisResult, charts: Optional[Dict[str, str]] = None, sample_df: Optional[Any] = None) -> Dict[str, Any]:
         """
         Prepare context data for the HTML template.
         
         Args:
             analysis_result: AnalysisResult object
             charts: Optional dictionary of charts
+            sample_df: Optional sample DataFrame
             
         Returns:
             Dictionary with template context
@@ -66,12 +68,21 @@ class HTMLReporter:
         # Calculate summary statistics
         summary_stats = self._calculate_summary_stats(analysis_result)
         
+        # Convert sample_df to records for Jinja2
+        sample_table = None
+        sample_columns = None
+        if sample_df is not None:
+            sample_table = sample_df.to_dict(orient='records')
+            sample_columns = list(sample_df.columns)
+        
         return {
             "analysis": analysis_result,
             "fields_by_type": fields_by_type,
             "summary_stats": summary_stats,
             "field_types": [ft.value for ft in FieldType],
             "charts": charts or {},
+            "sample_table": sample_table,
+            "sample_columns": sample_columns,
         }
     
     def _group_fields_by_type(self, fields: List[FieldAnalysis]) -> Dict[str, List[FieldAnalysis]]:

@@ -9,6 +9,7 @@
 - 📂 **Supports CSV, JSON, Excel, and Parquet files**
 - 🧠 **Automatic field type detection** (categorical, numerical, string, datetime, boolean, ID)
 - 📊 **Smart ID detection** - automatically identifies identifier columns (integer IDs, UUIDs, codes, keys)
+- 📝 **Sample table** - configurable sample of your data (head or random, default 5 rows) shown at the top of the HTML report
 - 📊 **Relevant statistics** for each field (unique counts, missing data, mean, std, quartiles, etc.)
 - 📈 **Interactive charts** (histograms for numerical data, bar charts for categorical, pie charts for boolean, time series for dates)
 - 📝 **JSON output** for programmatic use
@@ -46,11 +47,15 @@ Analyze a file and generate both JSON and HTML reports with charts:
 eli5-analyze analyze data.csv --output-json report.json --output-html report.html --with-charts
 ```
 
-Quick analysis with auto-named outputs and charts:
+Quick analysis with auto-named outputs, charts, and a random sample of 8 rows:
 
 ```bash
-eli5-analyze quick-analyze data.csv --with-charts
+eli5-analyze quick-analyze data.csv --with-charts --sample-size 8 --sample-type random
 ```
+
+**Sample Table Options:**
+- `--sample-size N` (default: 5) — number of rows to show in the sample table
+- `--sample-type head|random` (default: head) — show the first N rows or a random N rows
 
 Generate an HTML report from a JSON analysis:
 
@@ -72,14 +77,12 @@ from eli5_pandas import DataAnalyzer, HTMLReporter
 # Basic analysis
 analyzer = DataAnalyzer()
 result = analyzer.analyze_file('data.csv')
-analyzer.save_analysis_to_json(result, 'report.json')
-
-# Generate charts
+sample_df = analyzer.get_sample(n=8, sample_type='random')
 charts = analyzer.generate_charts(result)
 
-# Create HTML report with charts
+# Create HTML report with charts and sample table
 reporter = HTMLReporter()
-reporter.generate_report(result, 'report.html', charts)
+reporter.generate_report(result, 'report.html', charts, sample_df)
 ```
 
 ---

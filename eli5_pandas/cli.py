@@ -45,6 +45,21 @@ def main() -> None:
     help='Include interactive charts in HTML report'
 )
 @click.option(
+    '--sample-size',
+    '-s',
+    type=int,
+    default=5,
+    show_default=True,
+    help='Number of rows to show in the sample table (default: 5)'
+)
+@click.option(
+    '--sample-type',
+    type=click.Choice(['head', 'random'], case_sensitive=False),
+    default='head',
+    show_default=True,
+    help='How to select the sample table rows: head (first N) or random (random N)'
+)
+@click.option(
     '--verbose',
     '-v',
     is_flag=True,
@@ -56,6 +71,8 @@ def analyze(
     output_html: Optional[Path],
     categorical_threshold: float,
     with_charts: bool,
+    sample_size: int,
+    sample_type: str,
     verbose: bool
 ) -> None:
     """
@@ -69,6 +86,7 @@ def analyze(
             click.echo(f"📊 Categorical threshold: {categorical_threshold}")
             if with_charts:
                 click.echo("📈 Charts will be included in HTML report")
+            click.echo(f"📋 Sample table: {sample_type} {sample_size} rows")
         
         # Initialize analyzer
         analyzer = DataAnalyzer(categorical_threshold=categorical_threshold)
@@ -78,6 +96,7 @@ def analyze(
             click.echo("⏳ Starting analysis...")
         
         analysis_result = analyzer.analyze_file(str(file_path))
+        sample_df = analyzer.get_sample(sample_size, sample_type)
         
         if verbose:
             click.echo(f"✅ Analysis completed in {analysis_result.processing_time_seconds}s")
@@ -104,7 +123,7 @@ def analyze(
             if verbose:
                 click.echo(f"🌐 Generating HTML report: {output_html}")
             reporter = HTMLReporter()
-            reporter.generate_report(analysis_result, str(output_html), charts)
+            reporter.generate_report(analysis_result, str(output_html), charts, sample_df)
             click.echo(f"✅ HTML report saved to: {output_html}")
         
         # Display summary if no output files specified
@@ -169,6 +188,21 @@ def generate_html(json_path: Path, output_path: Path, verbose: bool) -> None:
     help='Include interactive charts in HTML report'
 )
 @click.option(
+    '--sample-size',
+    '-s',
+    type=int,
+    default=5,
+    show_default=True,
+    help='Number of rows to show in the sample table (default: 5)'
+)
+@click.option(
+    '--sample-type',
+    type=click.Choice(['head', 'random'], case_sensitive=False),
+    default='head',
+    show_default=True,
+    help='How to select the sample table rows: head (first N) or random (random N)'
+)
+@click.option(
     '--verbose',
     '-v',
     is_flag=True,
@@ -179,6 +213,8 @@ def quick_analyze(
     output: Optional[Path],
     categorical_threshold: float,
     with_charts: bool,
+    sample_size: int,
+    sample_type: str,
     verbose: bool
 ) -> None:
     """
@@ -191,6 +227,7 @@ def quick_analyze(
             click.echo(f"🚀 Quick analysis of: {file_path}")
             if with_charts:
                 click.echo("📈 Charts will be included in HTML report")
+            click.echo(f"📋 Sample table: {sample_type} {sample_size} rows")
         
         # Generate output paths if not provided
         if not output:
@@ -199,40 +236,19 @@ def quick_analyze(
         json_path = output.with_suffix('.json')
         html_path = output.with_suffix('.html')
         
-        if verbose:
-            click.echo(f"📊 JSON output: {json_path}")
-            click.echo(f"🌐 HTML output: {html_path}")
-        
-        # Initialize analyzer
         analyzer = DataAnalyzer(categorical_threshold=categorical_threshold)
-        
-        # Perform analysis
-        if verbose:
-            click.echo("⏳ Analyzing...")
-        
         analysis_result = analyzer.analyze_file(str(file_path))
-        
-        # Generate charts if requested
-        charts = None
-        if with_charts:
-            if verbose:
-                click.echo("📊 Generating charts...")
-            charts = analyzer.generate_charts(analysis_result)
-            if verbose:
-                click.echo(f"✅ Generated {len(charts)} charts")
-        
-        # Save results
+        sample_df = analyzer.get_sample(sample_size, sample_type)
+        charts = analyzer.generate_charts(analysis_result) if with_charts else None
         analyzer.save_analysis_to_json(analysis_result, str(json_path))
-        
         reporter = HTMLReporter()
-        reporter.generate_report(analysis_result, str(html_path), charts)
+        reporter.generate_report(analysis_result, str(html_path), charts, sample_df)
+        click.echo(f"📊 JSON output: {json_path}")
+        click.echo(f"🌐 HTML output: {html_path}")
         
-        click.echo(f"✅ Analysis complete!")
-        click.echo(f"📄 JSON results: {json_path}")
-        click.echo(f"🌐 HTML report: {html_path}")
-        
-        # Display summary
-        _display_summary(analysis_result)
+        if verbose:
+            click.echo("✅ Analysis complete!")
+            _display_summary(analysis_result)
         
     except Exception as e:
         click.echo(f"❌ Error: {str(e)}", err=True)

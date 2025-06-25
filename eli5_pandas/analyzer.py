@@ -205,4 +205,20 @@ class DataAnalyzer:
         with open(json_path, 'r') as f:
             data = json.load(f)
         
-        return AnalysisResult.model_validate(data) 
+        return AnalysisResult.model_validate(data)
+    
+    def get_sample(self, n: int = 5, sample_type: str = 'head') -> Optional[pd.DataFrame]:
+        """
+        Return a sample of the loaded data (head or random).
+        Args:
+            n: Number of rows to return
+            sample_type: 'head' for first n rows, 'random' for random n rows
+        Returns:
+            Sample DataFrame or None if no data loaded
+        """
+        if self._data is None:
+            return None
+        if sample_type == 'random':
+            return self._data.sample(n=min(n, len(self._data)), random_state=42)
+        else:
+            return self._data.head(n) 
