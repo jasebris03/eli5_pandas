@@ -39,6 +39,10 @@ class FieldTypeDetector:
         if len(non_null_series) == 0:
             return FieldType.UNKNOWN
         
+        # Check for ID type first (this should override other detections)
+        if self._is_id_field(series):
+            return FieldType.ID
+        
         # Check for boolean type
         if self._is_boolean(series):
             return FieldType.BOOLEAN
@@ -61,6 +65,83 @@ class FieldTypeDetector:
         
         # Default to string
         return FieldType.STRING
+    
+    def _is_id_field(self, series: pd.Series) -> bool:
+        """
+        Check if a field is an identifier column.
+        
+        Args:
+            series: Pandas Series to analyze
+            
+        Returns:
+            True if the field appears to be an ID column
+        """
+        column_name = series.name.lower()
+        non_null_series = series.dropna()
+        
+        if len(non_null_series) == 0:
+            return False
+        
+        # Check column name patterns that suggest ID fields
+        id_patterns = [
+            r'^id$',           # exact match for 'id'
+            r'^.*_id$',        # ends with '_id'
+            r'^id_.*$',        # starts with 'id_'
+            r'^.*identifier.*$', # contains 'identifier'
+            r'^.*key$',        # ends with 'key'
+            r'^.*code$',       # ends with 'code'
+            r'^uuid$',         # exact match for 'uuid'
+            r'^.*uuid.*$',     # contains 'uuid'
+            r'^pk$',           # primary key
+            r'^.*pk$',         # ends with 'pk'
+        ]
+        
+        # Check if column name matches any ID pattern
+        name_matches = any(re.match(pattern, column_name) for pattern in id_patterns)
+        
+        if not name_matches:
+            return False
+        
+        # Additional checks for ID characteristics
+        total_count = len(series)
+        unique_count = len(non_null_series.unique())
+        
+        # ID fields should have high uniqueness (close to 100%)
+        uniqueness_ratio = unique_count / total_count if total_count > 0 else 0
+        
+        # For ID fields, we expect:
+        # 1. High uniqueness (typically > 95% for most IDs)
+        # 2. No missing values (or very few)
+        # 3. Consistent data type
+        
+        if uniqueness_ratio < 0.9:  # Allow some flexibility for real-world data
+            return False
+        
+        # Check for UUID pattern if it's a string field
+        if series.dtype == 'object':
+            # Sample some values to check for UUID pattern
+            sample_size = min(10, len(non_null_series))
+            sample = non_null_series.head(sample_size)
+            
+            uuid_pattern = re.compile(
+                r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+                re.IGNORECASE
+            )
+            
+            # If any sample looks like UUID, it's likely an ID
+            if any(uuid_pattern.match(str(val)) for val in sample):
+                return True
+        
+        # For numeric IDs, check if they're sequential or have ID-like characteristics
+        if pd.api.types.is_numeric_dtype(series):
+            # Check if values are mostly sequential or have ID-like patterns
+            numeric_series = pd.to_numeric(series, errors='coerce').dropna()
+            if len(numeric_series) > 1:
+                # Check if values are positive and reasonable for IDs
+                if numeric_series.min() >= 0 and numeric_series.max() < 1e12:
+                    return True
+        
+        return True
     
     def _is_boolean(self, series: pd.Series) -> bool:
         """Check if series contains boolean values."""

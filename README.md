@@ -7,7 +7,8 @@
 ## Features
 
 - 📂 **Supports CSV, JSON, Excel, and Parquet files**
-- 🧠 **Automatic field type detection** (categorical, numerical, string, datetime, boolean)
+- 🧠 **Automatic field type detection** (categorical, numerical, string, datetime, boolean, ID)
+- 📊 **Smart ID detection** - automatically identifies identifier columns (integer IDs, UUIDs, codes, keys)
 - 📊 **Relevant statistics** for each field (unique counts, missing data, mean, std, quartiles, etc.)
 - 📈 **Interactive charts** (histograms for numerical data, bar charts for categorical, pie charts for boolean, time series for dates)
 - 📝 **JSON output** for programmatic use
@@ -92,6 +93,28 @@ The library automatically generates appropriate charts based on field types:
 - **🥧 Pie charts** for boolean fields (true/false distribution)
 - **📅 Time series** for datetime fields (timeline of occurrences)
 - **📋 Summary charts** for overall dataset insights (field type distribution, missing data)
+
+## Field Type Detection
+
+The library intelligently detects field types based on data characteristics and column names:
+
+### Supported Field Types
+- **String**: Text data with high variability
+- **Integer**: Whole numbers
+- **Float**: Decimal numbers
+- **Boolean**: True/false values (including string representations)
+- **Datetime**: Date and time values
+- **Categorical**: Limited set of unique values (configurable threshold)
+- **ID**: Identifier columns with high uniqueness
+
+### Smart ID Detection
+The library automatically identifies ID columns based on:
+- **Column name patterns**: `id`, `user_id`, `product_code`, `uuid`, `pk`, etc.
+- **Data characteristics**: High uniqueness (>90%), consistent format
+- **UUID detection**: Recognizes standard UUID format strings
+- **Numeric ID validation**: Positive integers within reasonable range
+
+ID fields are treated as categorical for statistics and charts, since they represent unique identifiers rather than numerical data for analysis.
 
 ---
 

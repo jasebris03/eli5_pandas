@@ -166,6 +166,9 @@ class DataAnalyzer:
         elif field_type == FieldType.BOOLEAN:
             # Treat boolean as categorical for statistics
             categorical_stats = self.stats_calculator.calculate_categorical_stats(series)
+        elif field_type == FieldType.ID:
+            # Treat ID as categorical for statistics (since IDs are unique identifiers)
+            categorical_stats = self.stats_calculator.calculate_categorical_stats(series)
         
         return FieldAnalysis(
             name=column_name,

@@ -36,6 +36,9 @@ class ChartGenerator:
             return self._generate_datetime_chart(field, data)
         elif field.field_type == FieldType.BOOLEAN:
             return self._generate_boolean_chart(field, data)
+        elif field.field_type == FieldType.ID:
+            # Skip charts for ID fields as they don't provide meaningful insights
+            return None
         else:
             return None
     

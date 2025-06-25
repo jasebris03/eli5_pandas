@@ -16,6 +16,7 @@ class FieldType(str, Enum):
     BOOLEAN = "boolean"
     DATETIME = "datetime"
     CATEGORICAL = "categorical"
+    ID = "id"
     UNKNOWN = "unknown"
 
 
