@@ -28,7 +28,7 @@ class HTMLReporter:
         """Get the directory containing HTML templates."""
         return str(Path(__file__).parent / "templates")
     
-    def generate_report(self, analysis_result: AnalysisResult, output_path: str, charts: Optional[Dict[str, str]] = None, sample_df: Optional[Any] = None) -> None:
+    def generate_report(self, analysis_result: AnalysisResult, output_path: str, charts: Optional[Dict[str, str]] = None, sample_df: Optional[Any] = None, show_all_stats: bool = False) -> None:
         """
         Generate an HTML report from analysis results.
         
@@ -37,11 +37,12 @@ class HTMLReporter:
             output_path: Path where to save the HTML file
             charts: Optional dictionary of charts to include
             sample_df: Optional sample DataFrame to display
+            show_all_stats: Whether to show all available statistics in the HTML report
         """
         template = self.env.get_template("report.html")
         
         # Prepare template context
-        context = self._prepare_context(analysis_result, charts, sample_df)
+        context = self._prepare_context(analysis_result, charts, sample_df, show_all_stats)
         
         # Render the template
         html_content = template.render(**context)
@@ -50,7 +51,7 @@ class HTMLReporter:
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(html_content)
     
-    def _prepare_context(self, analysis_result: AnalysisResult, charts: Optional[Dict[str, str]] = None, sample_df: Optional[Any] = None) -> Dict[str, Any]:
+    def _prepare_context(self, analysis_result: AnalysisResult, charts: Optional[Dict[str, str]] = None, sample_df: Optional[Any] = None, show_all_stats: bool = False) -> Dict[str, Any]:
         """
         Prepare context data for the HTML template.
         
@@ -58,6 +59,7 @@ class HTMLReporter:
             analysis_result: AnalysisResult object
             charts: Optional dictionary of charts
             sample_df: Optional sample DataFrame
+            show_all_stats: Whether to show all available statistics in the HTML report
             
         Returns:
             Dictionary with template context
@@ -83,6 +85,7 @@ class HTMLReporter:
             "charts": charts or {},
             "sample_table": sample_table,
             "sample_columns": sample_columns,
+            "show_all_stats": show_all_stats,
         }
     
     def _group_fields_by_type(self, fields: List[FieldAnalysis]) -> Dict[str, List[FieldAnalysis]]:

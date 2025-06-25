@@ -77,4 +77,37 @@ def test_html_report_sample_table_size():
                 html = f.read()
             assert f"Sample Data ({n} rows)" in html
         finally:
-            os.remove(tmp_path) 
+            os.remove(tmp_path)
+
+def test_html_report_show_all_numerical_stats():
+    analyzer = DataAnalyzer()
+    result = analyzer.analyze_file("sample_data/sample_data.csv")
+    sample_df = analyzer.get_sample(n=10, sample_type="head")
+    charts = analyzer.generate_charts(result)
+    reporter = HTMLReporter()
+    with tempfile.NamedTemporaryFile(suffix=".html", delete=False) as tmp:
+        tmp_path = tmp.name
+    try:
+        reporter.generate_report(result, tmp_path, charts, sample_df, show_all_stats=True)
+        with open(tmp_path, "r", encoding="utf-8") as f:
+            html = f.read()
+        # Check for all numerical stats labels
+        assert "Min" in html
+        assert "Max" in html
+        assert "Mean" in html
+        assert "Median" in html
+        assert "Std Dev" in html
+        # Only check for quartile labels if at least one field has quartiles
+        has_quartiles = any(
+            f.numerical_stats and f.numerical_stats.quartiles and all(
+                k in f.numerical_stats.quartiles and f.numerical_stats.quartiles[k] is not None
+                for k in ["25%", "50%", "75%"]
+            )
+            for f in result.fields if f.numerical_stats
+        )
+        if has_quartiles:
+            assert "Q1 (25%)" in html
+            assert "Q2 (50%)" in html
+            assert "Q3 (75%)" in html
+    finally:
+        os.remove(tmp_path) 

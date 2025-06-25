@@ -418,6 +418,54 @@
                             {% endif %}
                             
                             {% if field.numerical_stats %}
+                            {% if show_all_stats %}
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.min_value }}</div>
+                                <div class="stat-label">Min</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.max_value }}</div>
+                                <div class="stat-label">Max</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.mean | round(2) if field.numerical_stats.mean is not none else 'N/A' }}</div>
+                                <div class="stat-label">Mean</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.median | round(2) if field.numerical_stats.median is not none else 'N/A' }}</div>
+                                <div class="stat-label">Median</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.std_dev | round(2) if field.numerical_stats.std_dev is not none else 'N/A' }}</div>
+                                <div class="stat-label">Std Dev</div>
+                            </div>
+                            {% if field.numerical_stats.quartiles %}
+                            {% if field.numerical_stats.quartiles['q25'] is defined and field.numerical_stats.quartiles['q25'] is not none %}
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.quartiles['q25'] | round(2) }}</div>
+                                <div class="stat-label">Q1 (25%)</div>
+                            </div>
+                            {% endif %}
+                            {% if field.numerical_stats.quartiles['q50'] is defined and field.numerical_stats.quartiles['q50'] is not none %}
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.quartiles['q50'] | round(2) }}</div>
+                                <div class="stat-label">Q2 (50%)</div>
+                            </div>
+                            {% endif %}
+                            {% if field.numerical_stats.quartiles['q75'] is defined and field.numerical_stats.quartiles['q75'] is not none %}
+                            <div class="stat-item">
+                                <div class="stat-value">{{ field.numerical_stats.quartiles['q75'] | round(2) }}</div>
+                                <div class="stat-label">Q3 (75%)</div>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                            <div class="stat-item">
+                                <div class="stat-value {% if field.numerical_stats.missing_percentage > 10 %}missing-data{% elif field.numerical_stats.missing_percentage > 5 %}warning-data{% else %}good-data{% endif %}">
+                                    {{ field.numerical_stats.missing_percentage }}%
+                                </div>
+                                <div class="stat-label">Missing Data</div>
+                            </div>
+                            {% else %}
                             <div class="stat-item">
                                 <div class="stat-value">{{ field.numerical_stats.mean | round(2) if field.numerical_stats.mean else 'N/A' }}</div>
                                 <div class="stat-label">Mean</div>
@@ -432,6 +480,7 @@
                                 </div>
                                 <div class="stat-label">Missing Data</div>
                             </div>
+                            {% endif %}
                             {% endif %}
                             
                             {% if field.string_stats %}

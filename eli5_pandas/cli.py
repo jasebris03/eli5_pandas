@@ -60,6 +60,11 @@ def main() -> None:
     help='How to select the sample table rows: head (first N) or random (random N)'
 )
 @click.option(
+    '--show-all-stats',
+    is_flag=True,
+    help='Show all available statistics for each field in the HTML report'
+)
+@click.option(
     '--verbose',
     '-v',
     is_flag=True,
@@ -73,6 +78,7 @@ def analyze(
     with_charts: bool,
     sample_size: int,
     sample_type: str,
+    show_all_stats: bool,
     verbose: bool
 ) -> None:
     """
@@ -123,7 +129,7 @@ def analyze(
             if verbose:
                 click.echo(f"🌐 Generating HTML report: {output_html}")
             reporter = HTMLReporter()
-            reporter.generate_report(analysis_result, str(output_html), charts, sample_df)
+            reporter.generate_report(analysis_result, str(output_html), charts, sample_df, show_all_stats=show_all_stats)
             click.echo(f"✅ HTML report saved to: {output_html}")
         
         # Display summary if no output files specified
@@ -203,6 +209,11 @@ def generate_html(json_path: Path, output_path: Path, verbose: bool) -> None:
     help='How to select the sample table rows: head (first N) or random (random N)'
 )
 @click.option(
+    '--show-all-stats',
+    is_flag=True,
+    help='Show all available statistics for each field in the HTML report'
+)
+@click.option(
     '--verbose',
     '-v',
     is_flag=True,
@@ -215,6 +226,7 @@ def quick_analyze(
     with_charts: bool,
     sample_size: int,
     sample_type: str,
+    show_all_stats: bool,
     verbose: bool
 ) -> None:
     """
@@ -242,7 +254,7 @@ def quick_analyze(
         charts = analyzer.generate_charts(analysis_result) if with_charts else None
         analyzer.save_analysis_to_json(analysis_result, str(json_path))
         reporter = HTMLReporter()
-        reporter.generate_report(analysis_result, str(html_path), charts, sample_df)
+        reporter.generate_report(analysis_result, str(html_path), charts, sample_df, show_all_stats=show_all_stats)
         click.echo(f"📊 JSON output: {json_path}")
         click.echo(f"🌐 HTML output: {html_path}")
         
